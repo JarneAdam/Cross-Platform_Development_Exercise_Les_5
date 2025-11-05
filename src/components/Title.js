@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 import theme from '../theme';
 
-const Title = () => <Text style={styles.container}>Open issues</Text>;
+const Title = ({ status }) => <Text style={styles.container}>{status} issues</Text>;
 
 const styles = StyleSheet.create({
     container: {

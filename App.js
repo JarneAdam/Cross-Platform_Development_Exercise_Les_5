@@ -5,7 +5,7 @@ import List from './src/components/List';
 export default function App() {
   return (
     <View style={styles.container}>
-      <List />
+      <List status="Open" />
     </View>
   );
 }

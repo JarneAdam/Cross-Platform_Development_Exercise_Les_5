@@ -1,36 +1,40 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { issues } from '../../issues';
 import Title from './Title';
 import theme from '../theme';
 
-const List = () => {
+const List = ({ status }) => {
   const extractId = (id) => id.substr(3);
   const toUpper = (text) => text.substr(0, text.indexOf(' ')).toUpperCase();
 
+  const renderItem = ({ item }) => (
+    <View style={[styles.issueItem, item.assigned && item.assigned.toLowerCase() === 'katerina larson' ? styles.katerina : styles.other]}>
+      <Text>
+        <Text style={styles.propName}>ID: </Text>
+        {extractId(item.id)}
+      </Text>
+      <Text>
+        <Text style={styles.propName}>Omschrijving: </Text>
+        {item.description}
+      </Text>
+      <Text>
+        <Text style={styles.propName}>Toegewezen aan: </Text>
+        {toUpper(item.assigned)}
+      </Text>
+    </View>
+  );
+
+  const filteredIssues = issues.filter(issue => issue.status === status);
+
   return (
     <View>
-      <Title />
-      {
-        issues
-          .filter(issue => issue.status == 'Open')
-          .map(issue => (
-            <View key={issue.id} style={[styles.issueItem, issue.assigned && issue.assigned.toLowerCase() === 'katerina larson' ? styles.katerina : styles.other]}>
-              <Text>
-                <Text style={styles.propName}>ID: </Text>
-                {extractId(issue.id)}
-              </Text>
-              <Text>
-                <Text style={styles.propName}>Omschrijving: </Text>
-                {issue.description}
-              </Text>
-              <Text>
-                <Text style={styles.propName}>Toegewezen aan: </Text>
-                {toUpper(issue.assigned)}
-              </Text>
-            </View>
-          ))
-      }
+      <Title status={status} />
+      <FlatList
+        data={filteredIssues}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+      />
     </View>
   );
 }
