@@ -1,8 +1,0 @@
-export default {
-  TITLE_FONT_SIZE: 20,
-  TITLE_WEIGHT: 'bold',
-  BORDER_COLOR: '#000',
-  PROPERTY_WEIGHT: 600,
-  ISSUE_COLOR: '#9393d28c',
-  ISSUE_HIGHLIGHT: '#f3b7b763',
-};
