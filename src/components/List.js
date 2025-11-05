@@ -8,12 +8,9 @@ const List = ({ status }) => {
   const extractId = (id) => id.substr(3);
   const toUpper = (text) => text.substr(0, text.indexOf(' ')).toUpperCase();
 
-  // Group issues by person
   const groupIssuesByPerson = () => {
-    // Get unique persons
     const persons = [...new Set(issues.map(issue => issue.assigned))];
 
-    // Create sections array sorted by name
     const sections = persons.map(person => ({
       name: person,
       data: issues.filter(issue =>
@@ -21,7 +18,7 @@ const List = ({ status }) => {
         issue.assigned === person
       )
     }))
-      .sort((a, b) => a.name.localeCompare(b.name)); // Sort by name
+      .sort((a, b) => a.name.localeCompare(b.name));
 
     return sections;
   };
