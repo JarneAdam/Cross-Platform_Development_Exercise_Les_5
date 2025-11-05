@@ -59,7 +59,9 @@ const List = ({ status }) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 40,
+    width: '90%',
+    maxWidth: 600,
+    padding: 20,
   },
   issueItem: {
     borderBottomWidth: 1,
