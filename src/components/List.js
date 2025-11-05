@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, SectionList } from 'react-native';
 import { issues } from '../../issues';
 import Title from './Title';
 import theme from '../theme';
@@ -7,6 +7,24 @@ import theme from '../theme';
 const List = ({ status }) => {
   const extractId = (id) => id.substr(3);
   const toUpper = (text) => text.substr(0, text.indexOf(' ')).toUpperCase();
+
+  // Group issues by person
+  const groupIssuesByPerson = () => {
+    // Get unique persons
+    const persons = [...new Set(issues.map(issue => issue.assigned))];
+
+    // Create sections array sorted by name
+    const sections = persons.map(person => ({
+      name: person,
+      data: issues.filter(issue =>
+        issue.status === status &&
+        issue.assigned === person
+      )
+    }))
+      .sort((a, b) => a.name.localeCompare(b.name)); // Sort by name
+
+    return sections;
+  };
 
   const renderItem = ({ item }) => (
     <View style={[styles.issueItem, item.assigned && item.assigned.toLowerCase() === 'katerina larson' ? styles.katerina : styles.other]}>
@@ -25,14 +43,17 @@ const List = ({ status }) => {
     </View>
   );
 
-  const filteredIssues = issues.filter(issue => issue.status === status);
+  const renderSectionHeader = ({ section }) => (
+    <Text style={styles.sectionHeader}>{section.name}</Text>
+  );
 
   return (
-    <View>
+    <View style={styles.container}>
       <Title status={status} />
-      <FlatList
-        data={filteredIssues}
+      <SectionList
+        sections={groupIssuesByPerson()}
         renderItem={renderItem}
+        renderSectionHeader={renderSectionHeader}
         keyExtractor={item => item.id}
       />
     </View>
@@ -40,6 +61,9 @@ const List = ({ status }) => {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    padding: 40,
+  },
   issueItem: {
     borderBottomWidth: 1,
     borderBottomColor: theme.COLOR_BORDER,
@@ -56,6 +80,9 @@ const styles = StyleSheet.create({
   },
   other: {
     backgroundColor: theme.COLOR_OTHER_BG
+  },
+  sectionHeader: {
+    fontWeight: 'bold'
   }
 });
 
